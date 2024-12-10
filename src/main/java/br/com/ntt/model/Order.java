@@ -19,6 +19,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -35,6 +36,7 @@ import java.util.stream.Collectors;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 public class Order {
 
     @Id
@@ -63,7 +65,7 @@ public class Order {
     private LocalDateTime updatedAt;
 
     public static Order of(OrderRequest orderRequest) {
-        var products = orderRequest.productsRequest()
+        var products = orderRequest.getProductsRequest()
                 .stream()
                 .map(Product::of)
                 .collect(Collectors.toSet());
@@ -73,7 +75,7 @@ public class Order {
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
         return Order.builder()
-                .uuid(orderRequest.uuid())
+                .uuid(orderRequest.getUuid())
                 .status(OrderStatus.SUCCESS)
                 .products(products)
                 .total(total)

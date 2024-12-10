@@ -6,10 +6,10 @@ import br.com.ntt.model.Order;
 import br.com.ntt.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.server.ResponseStatusException;
 
 @Service
 @RequiredArgsConstructor
@@ -26,9 +26,9 @@ public class OrderService {
     }
 
     @Transactional(readOnly = true)
-    public OrderResponse findBy(String uuid) {
-        return orderRepository.findByUuid(uuid)
-                .map(OrderResponse::of)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Order not found"));
+    public Page<OrderResponse> findAll(Integer page, Integer size) {
+        var pageRequest = PageRequest.of(page, size);
+        return orderRepository.findAll(pageRequest)
+                .map(OrderResponse::of);
     }
 }

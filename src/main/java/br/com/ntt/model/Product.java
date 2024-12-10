@@ -49,8 +49,8 @@ public class Product {
 
     public static Product of(ProductRequest productRequest) {
         return Product.builder()
-                .name(productRequest.name())
-                .price(productRequest.price())
+                .name(productRequest.getName())
+                .price(productRequest.getPrice())
                 .build();
     }
 
