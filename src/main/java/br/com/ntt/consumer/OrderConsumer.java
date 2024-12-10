@@ -31,7 +31,6 @@ public class OrderConsumer {
             orderService.save(orderRequest);
         } catch (DataIntegrityViolationException ex) {
             log.warn("Record already exists and will be ignored {}", message);
-            throw ex;
         } catch (JsonProcessingException ex) {
             log.error("Message will be ignored {}", message);
         } catch (Exception ex) {
